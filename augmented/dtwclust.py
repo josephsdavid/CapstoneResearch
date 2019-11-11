@@ -1,23 +1,34 @@
 import numpy as np
+import timeit
 import matplotlib.pyplot as plt
 import seaborn as sns
 from dtw import *
 from scipy.spatial.distance import pdist, squareform
+from sklearn.model_selection import train_test_split
 
 x = np.load("x.npy")
 y = np.load("y.npy")
 
+x_train, x_test, y_train, y_test = train_test_split(x[:250,:], y[:250], test_size = 0.5)
 
-x = x.T
+
+
+
+
+x.shape
+
+dtw(x[1,:], x[0,:], keep_internals = True)
+
+alignment.plot("twoway", offset = -5)
 
 def dtwdist(x,y):
     res = dtw(x, y, keep_internals = True)
     return(res.distance)
 
+dist = pdist(x_train, dtwdist)
+dist2 = squareform(pdist)
 
-dist = pdist(x, dtwdist)
-
-
+# https://qiita.com/takeshikondo/items/3aae12df9063c539b0ea
 class KMedoids():
   def __init__(self, n_cluster, max_iter=300):
     self.n_cluster = n_cluster
@@ -80,7 +91,7 @@ class KMedoids():
 
     return results['label'].values
 
-km = KMedoids(3, 300)
-pred = km.fit_predict(dtw_mat)
+km = KMedoids(2, 300)
+pred = km.fit_predict(dist2)
 
 print ('cluster predict: ', pred)

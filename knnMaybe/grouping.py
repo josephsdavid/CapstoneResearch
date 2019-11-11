@@ -49,7 +49,13 @@ y
 x = np.asmatrix(x)
 x.shape
 
-from dtw import dtw
+from dtw import *
+
+alignment = dtw(a1norm, a1limp, keep_internals = True)
+alignment.plot(type = "twoway", offset = -5)
+
+alignment.plot(type = "threeway")
+
 
 def normalDTWDistance(x,y):
     res = dtw(x, y, keep_internals = True)
