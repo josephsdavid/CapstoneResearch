@@ -1,18 +1,23 @@
 let
   pkgs = import <stable> {};
 
-  umap = pkgs.callPackage ./umap.nix {
+  umap = pkgs.callPackage ./nix/umap.nix {
     buildPythonPackage = pkgs.python37.pkgs.buildPythonPackage;
     fetchPypi = pkgs.python37.pkgs.fetchPypi;
     pythonSource = pkgs.python37Packages;
   };
-  dtw = pkgs.callPackage ./dtw.nix {
+  transforms3d = pkgs.callPackage ./nix/transforms3d.nix {
+    buildPythonPackage = pkgs.python37.pkgs.buildPythonPackage;
+    fetchPypi = pkgs.python37.pkgs.fetchPypi;
+    pythonSource = pkgs.python37Packages;
+  };
+  dtw = pkgs.callPackage ./nix/dtw.nix {
     buildPythonPackage = pkgs.python37.pkgs.buildPythonPackage;
     fetchPypi = pkgs.python37.pkgs.fetchPypi;
     pythonSource = pkgs.python37Packages;
   };
 
-  n2d = pkgs.callPackage ./n2d.nix {
+  n2d = pkgs.callPackage ./nix/n2d.nix {
     buildPythonPackage = pkgs.python37.pkgs.buildPythonPackage;
     pythonSource = pkgs.python37Packages;
     fetchPypi = pkgs.python37.pkgs.fetchPypi;
@@ -54,6 +59,7 @@ in
       python37Packages.sphinx_rtd_theme
       python37Packages.ipython
       dtw
+      transforms3d
     ];
     shellHook = ''
       '';
