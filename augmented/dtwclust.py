@@ -1,23 +1,22 @@
 import numpy as np
-import timeit
+import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from dtw import *
 from scipy.spatial.distance import pdist, squareform
 from sklearn.model_selection import train_test_split
 
+
+from sklearn.metrics import accuracy_score, auc, classification_report, f1_score
+
 x = np.load("x.npy")
 y = np.load("y.npy")
 
 x_train, x_test, y_train, y_test = train_test_split(x[:250,:], y[:250], test_size = 0.5)
 
+x_train.shape
 
-
-
-
-x.shape
-
-dtw(x[1,:], x[0,:], keep_internals = True)
+alignment = dtw(x[1,:], x[0,:], keep_internals = True)
 
 alignment.plot("twoway", offset = -5)
 
@@ -26,7 +25,12 @@ def dtwdist(x,y):
     return(res.distance)
 
 dist = pdist(x_train, dtwdist)
-dist2 = squareform(pdist)
+
+dist2 = squareform(dist)
+
+
+dist2.shape
+
 
 # https://qiita.com/takeshikondo/items/3aae12df9063c539b0ea
 class KMedoids():
@@ -93,5 +97,17 @@ class KMedoids():
 
 km = KMedoids(2, 300)
 pred = km.fit_predict(dist2)
+
+
+from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score
+
+(adjusted_rand_score(y_train, pred), normalized_mutual_info_score(y_train, pred), accuracy_score(y_train, pred))
+# 0.78, 0.74, 0.94
+
+f1_score(y_train, pred)
+# 0.95
+accuracy_score(y_train, pred)
+# 0
+
 
 print ('cluster predict: ', pred)

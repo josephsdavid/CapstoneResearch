@@ -27,6 +27,9 @@ x_train, x_test, y_train, y_test = train_test_split(x,y, test_size =0.5)
 x_set = np.vstack([x_train, x_test])
 y_set = np.hstack([y_train, y_test])
 
+x_set = np.load("x.npy")
+y_set = np.load("y.npy")
+
 
 ndim = 10
 model = n2d.n2d(x_set, nclust = ndim)
@@ -38,6 +41,7 @@ manifoldGMM = n2d.UmapGMM(nclust = 2)
 model.predict(manifoldGMM)
 
 model.assess(y_set.T)
+# acc .97  nmi .82 ari .89
 
 model.visualize(y_set, None, dataset= "augmented", nclust = 2)
 
